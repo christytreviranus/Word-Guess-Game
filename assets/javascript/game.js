@@ -1,7 +1,6 @@
-//Pick a random word
+//Declare Variables 
 
 let words = [
-    "guitar",
     "chords",
     "fermata",
     "harmony",
@@ -14,41 +13,105 @@ let words = [
     "adagio"
 ];
 
-//Pick a random word from the array
+var maxNumGuesses = 25; // max number of guesses 
+var guessedLetters = []; // store the guessed letters
+var ansWordArr = []; // store the "_" and to be used to replace the word answer
+var numGuessesRemaining = 0; // number of guesses remaining
+var numWins = 0; // number of wins
+var numLosses = 0; // number of losses
+var isFinished = false; // when true, game can start again
+var ansWord; // the word that is being played
 
-let randomWord =  words[Math.floor(Math.random() * words.length)];
+// function runs at the start of page and used to restart after game isFinished
+function setup() {
+    //picks random word from words list
+    ansWord = words[Math.floor(Math.random() * words.length)];
 
-//Create an answer array to show underscores for the random word selected
+    ansWordArr = [];
 
-let answer = [];
+    // adds "_" to ansWordArr
+    for (var i = 0; i < ansWord.length; i++) {
+        ansWordArr[i] = "_";
+    }
 
-for (i = 0; i < words.length; i++){
-    answer[i] = " _ ";
-}
+    // reset the variables 
+    numGuessesRemaining = maxNumGuesses;
+    guessedLetters = [];
 
-const remainingLetters = randomWord.length;
+    //show the selected elements on the screen 
+    updateScreen();
+};
 
-//Game Loop & User Progress
+//updates the HTML from the functions
+function updateScreen() {
+    document.getElementById("wins").innerText = "Wins: " + numWins;
+    document.getElementById("losses").innerText = "Losses: " + numLosses;
+    document.getElementById("guessesLeft").innerText = "Guesses Left: " + numGuessesRemaining;
+    document.getElementById("answerWord").innerText = ansWordArr.join("");
+    document.getElementById("currentGuesses").innerText = "Your Guesses So Far: " + guessedLetters;
+};
 
-while (remainingLetters > 0){
-    answer.join(" ");
+//function to check the key that's pressed
+function checkGuess(letter) {
+    //if letter is not in guessedLetters array then push the letter to the array
+    if (guessedLetters.indexOf(letter) === -1) {
+        guessedLetters.push(letter);
+        //if the letter isn't in the answer word then -1 the numGuessesRemaining
+        if (ansWord.indexOf(letter) === -1) {
+            numGuessesRemaining--;
+        //if letter is in answer then replace the positioned "_" with the letter
+        } else { 
+            for (var i = 0; i < ansWord.length; i++) {
+                if (letter === ansWord[i]) {
+                    ansWordArr[i] = letter;
+                } 
+            }                
+        }
+    }
 
-    //Player Guess
-    
-}
-While the word has not been guessed {
- Show the player their current progress
- Get a guess from the player
- If the player wants to quit the game {
- Quit the game
- }
- Else If the guess is not a single letter {
- Tell the player to pick a single letter
- }
- Else {
- If the guess is in the word {
- Update the player's progress with the guess
- }
- }
-}
-Congratulate the player on guessing the word
+}; 
+
+//function to check if the player is a winner
+function isWinner() {
+    //if there are no more "_" in the ansWordArr then +1 to Wins and switch isFinished to true
+    if (ansWordArr.indexOf("_") === -1) {
+        numWins++;
+        isFinished = true;
+    }
+};
+
+//function to check if player is a loser
+function isLoser() {
+    // if the numGuessesRemaining is 0 then -1 numLosses and switch isFinished to true
+    if(numGuessesRemaining <= 0) {
+        numLosses++;
+        isFinished = true;
+    }
+
+};
+
+
+//event listener for key pressed
+document.onkeyup = function(event) {
+    //if isFinished is true then restart the game to the initial setup 
+    //and switch isFinished back to false
+    if (isFinished) {
+        setup();
+        isFinished = false;
+    } else {
+        //check to see if only letters A-Z are pressed
+        //functions are executed when user presses A-Z key
+        if(event.keyCode >= 65 && event.keyCode <= 90) {
+            checkGuess(event.key.toUpperCase()); 
+            updateScreen();
+            isWinner();
+            isLoser();
+        }
+    }
+};
+
+
+setup();
+updateScreen();
+
+console.log(ansWord);
