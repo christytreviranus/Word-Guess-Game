@@ -1,6 +1,6 @@
 //Declare Variables 
 
-let words = [
+const words = [
     "chords",
     "fermata",
     "harmony",
@@ -13,28 +13,27 @@ let words = [
     "adagio"
 ];
 
-var maxNumGuesses = 25; // max number of guesses 
-var guessedLetters = []; // store the guessed letters
-var ansWordArr = []; // store the "_" and to be used to replace the word answer
-var numGuessesRemaining = 0; // number of guesses remaining
-var numWins = 0; // number of wins
-var numLosses = 0; // number of losses
-var isFinished = false; // when true, game can start again
-var ansWord; // the word that is being played
+let maxNumGuesses = 10;
+let guessedLetters = []; 
+let ansWordArr = []; 
+let numGuessesRemaining = 0;
+let numWins = 0; 
+let numLosses = 0;
+let isFinished = false;
+let ansWord;
 
-// function runs at the start of page and used to restart after game isFinished
+//Initialize and Reset Function
 function setup() {
     //picks random word from words list
     ansWord = words[Math.floor(Math.random() * words.length)];
-
+    
     ansWordArr = [];
 
-    // adds "_" to ansWordArr
     for (var i = 0; i < ansWord.length; i++) {
         ansWordArr[i] = "_";
     }
 
-    // reset the variables 
+    //reset the variables 
     numGuessesRemaining = maxNumGuesses;
     guessedLetters = [];
 
@@ -44,16 +43,16 @@ function setup() {
 
 //updates the HTML from the functions
 function updateScreen() {
-    document.getElementById("wins").innerText = "Wins: " + numWins;
-    document.getElementById("losses").innerText = "Losses: " + numLosses;
-    document.getElementById("guessesLeft").innerText = "Guesses Left: " + numGuessesRemaining;
-    document.getElementById("answerWord").innerText = ansWordArr.join("");
-    document.getElementById("currentGuesses").innerText = "Your Guesses So Far: " + guessedLetters;
+    document.getElementById("wins").innerHTML = "Wins: " + numWins;
+    document.getElementById("losses").innerHTML = "Losses: " + numLosses;
+    document.getElementById("guessesLeft").innerHTML = "Guesses Left: " + numGuessesRemaining;
+    document.getElementById("answerWord").innerHTML = ansWordArr.join(" ");
+    document.getElementById("currentGuesses").innerHTML = "Your Guesses So Far: " + guessedLetters;
 };
 
 //function to check the key that's pressed
 function checkGuess(letter) {
-    //if letter is not in guessedLetters array then push the letter to the array
+    //For Guessed Letters not in AnsWord, Push to Guessed Letters Array
     if (guessedLetters.indexOf(letter) === -1) {
         guessedLetters.push(letter);
         //if the letter isn't in the answer word then -1 the numGuessesRemaining
@@ -68,14 +67,14 @@ function checkGuess(letter) {
             }                
         }
     }
-
 }; 
 
 //function to check if the player is a winner
 function isWinner() {
     //if there are no more "_" in the ansWordArr then +1 to Wins and switch isFinished to true
-    if (ansWordArr.indexOf("_") === -1) {
+    if (ansWordArr.indexOf(" _ ") == ansWordArr && ansWordArr.indexOf(" _ ") == -1) {
         numWins++;
+        updateScreen();
         isFinished = true;
     }
 };
@@ -83,13 +82,12 @@ function isWinner() {
 //function to check if player is a loser
 function isLoser() {
     // if the numGuessesRemaining is 0 then -1 numLosses and switch isFinished to true
-    if(numGuessesRemaining <= 0) {
+    if(numGuessesRemaining === 0) {
         numLosses++;
         isFinished = true;
     }
 
 };
-
 
 //event listener for key pressed
 document.onkeyup = function(event) {
@@ -99,16 +97,12 @@ document.onkeyup = function(event) {
         setup();
         isFinished = false;
     } else {
-        //check to see if only letters A-Z are pressed
-        //functions are executed when user presses A-Z key
-        if(event.keyCode >= 65 && event.keyCode <= 90) {
-            checkGuess(event.key.toUpperCase()); 
+            checkGuess(event.key.toLowerCase()); 
             updateScreen();
             isWinner();
             isLoser();
         }
-    }
-};
+    };
 
 
 setup();
