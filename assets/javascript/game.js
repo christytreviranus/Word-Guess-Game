@@ -72,7 +72,7 @@ function checkGuess(letter) {
 //function to check if the player is a winner
 function isWinner() {
     //if there are no more "_" in the ansWordArr then +1 to Wins and switch isFinished to true
-    if (ansWordArr.indexOf(" _ ") == ansWordArr && ansWordArr.indexOf(" _ ") == -1) {
+    if (ansWordArr.indexOf(" _ ") === -1) {
         numWins++;
         updateScreen();
         isFinished = true;
