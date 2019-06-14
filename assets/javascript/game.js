@@ -71,11 +71,13 @@ function checkGuess(letter) {
 
 //function to check if the player is a winner
 function isWinner() {
-    //if there are no more "_" in the ansWordArr then +1 to Wins and switch isFinished to true
-    if (ansWordArr.indexOf(" _ ") == ansWordArr && ansWordArr.indexOf(" _ ") == -1) {
+
+    //Check if the guesses equal the answer word generated then +1 to Wins and switch isFinished to true
+    if (ansWordArr.join('') == ansWord && numGuessesRemaining >= 0) { 
         numWins++;
-        updateScreen();
         isFinished = true;
+        updateScreen();
+        setup();
     }
 };
 
@@ -107,5 +109,3 @@ document.onkeyup = function(event) {
 
 setup();
 updateScreen();
-
-console.log(ansWord);
