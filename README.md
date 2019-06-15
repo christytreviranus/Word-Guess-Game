@@ -18,4 +18,4 @@ there's not a match, this letter will be displayed in the "Letters Already Guess
 
 ### Additional Information
 
-Still working out a few kinks with the completed word guess functionality 
+Still working out a few kinks with the completed word guess functionality -- Fixed 6/13/2019
