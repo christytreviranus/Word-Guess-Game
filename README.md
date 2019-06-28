@@ -16,6 +16,12 @@ there's not a match, this letter will be displayed in the "Letters Already Guess
 
 5. LOSS: If the player's pressed letter keys did not match the word, and exhausted the 10 chances, the "Losses" count goes up, and a new word to be guessed is displayed, "Number of Guesses Remaining" returns to 10, and clears any letters in the "Letters Already Guessed" box.
 
+## Technologies Used
+- HTML
+- CSS 
+- Bootstrap
+- JavaScript
+
 ### Additional Information
 
 Still working out a few kinks with the completed word guess functionality -- Fixed 6/13/2019
